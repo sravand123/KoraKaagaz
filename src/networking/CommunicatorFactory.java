@@ -10,6 +10,7 @@ import networking.LanCommunicator;
 *
 */
 
+
 public class CommunicatorFactory{
 
 	private static ICommunicator communicatorInstance;
@@ -25,10 +26,20 @@ public class CommunicatorFactory{
 		return communicatorInstance;
 	}
 
-	public static int getPort(){
+	private static int getPort(){
 		return 0;
 	}
 
+	private static String getLocalIp(){
+		return "";
+	}
+	/**
+	* @getClientInfo() helps in obtaning the private address of client's pc and
+	* port of client's pc where our application listening to.
+	*/
+	public static String getClientInfo(){
+		return (getLocalIp()+getPort());
+	}
 	/**
 	* method @freeCommunicator() is used for getting rid of communicator
 	*/
