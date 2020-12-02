@@ -177,8 +177,21 @@ public class SendQueueListener implements Runnable {
                     /** create data output stream as we are using tcp. */
                     DataOutputStream dout = new DataOutputStream(sock.getOutputStream());
 
-                    /** encode the data into UTF format and write it to output stream */
-                    dout.writeUTF(encodedMessage);
+                    int threshold = 25000;
+                    String buffer="";
+                    /** Sending data in chunks of size 50000 bytes*/
+                    for(int i =0 ; i < encodedMessage.length(); i++) {
+                        if(buffer.length()>=threshold) {
+                            dout.writeUTF(buffer);
+                            buffer ="";
+                        }
+                        buffer = buffer+encodedMessage.charAt(i);
+                    }
+                    if(buffer.length()>0) {
+                        dout.writeUTF(buffer);
+                    }
+                   
+                    dout.writeUTF("EOF");
 
                     /** flush the byte stream into the network. */
                     dout.flush();

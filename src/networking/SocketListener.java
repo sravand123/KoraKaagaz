@@ -172,10 +172,13 @@ public class SocketListener implements Runnable {
 					input = new DataInputStream(socket.getInputStream());
 					logger.log(ModuleID.NETWORKING, LogLevel.INFO, "Successfully received data from client");
 
-					/**
-					 * Converts the received input into UTF format
-					 */
-					String recvMsg = input.readUTF();
+					String recvMsg="";
+					String chunk = "";
+					while(true) {
+						chunk = input.readUTF();
+						if(chunk.equals("EOF")) break;
+						recvMsg+=chunk;
+					}
 					String id = getIdFromPacket(recvMsg);
 					String msg = getMsgFromPacket(recvMsg);
 
